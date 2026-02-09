@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Accs — Coming Soon</title>
+  <meta name="description" content="Fast Accs is coming soon. Premium services, delivered fast.">
+  <meta name="theme-color" content="#07090C">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Fast Accs — Coming Soon">
+  <meta property="og:description" content="Fast Accs is coming soon. Premium services, delivered fast.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=DM+Sans:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #07090C;
+      --text: #f0f2f5;
+      --text-dim: rgba(255,255,255,0.5);
+      --primary: #05D471;
+      --accent: #696DFA;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient background glow */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 600px 400px at 30% 40%, rgba(5,212,113,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 500px at 70% 60%, rgba(105,109,250,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .container {
+      text-align: center;
+      padding: 40px 24px;
+      max-width: 520px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-mark {
+      width: 72px;
+      height: auto;
+      margin: 0 auto 32px;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out 0.1s forwards;
+    }
+
+    .coming-soon {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--primary);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out 0.3s forwards;
+    }
+
+    .title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out 0.4s forwards;
+    }
+
+    .title span {
+      background: linear-gradient(135deg, var(--text) 40%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-dim);
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out 0.5s forwards;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--primary), #0D9152);
+      color: #04140C;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(5,212,113,0.3);
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out 0.6s forwards;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(5,212,113,0.4);
+    }
+
+    .cta-btn:active {
+      transform: translateY(0);
+    }
+
+    .cta-arrow {
+      font-size: 18px;
+      transition: transform 0.2s ease;
+    }
+
+    .cta-btn:hover .cta-arrow {
+      transform: translateX(3px);
+    }
+
+    .footer-note {
+      margin-top: 60px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out 0.8s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .title { font-size: 36px; }
+      .subtitle { font-size: 14px; }
+      .logo-mark { width: 56px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="logo-mark" src="https://raw.githubusercontent.com/Ejiro-David/fa-logistics-product-images/master/branding/fa-mark-white-transparent.png" alt="Fast Accs" width="516" height="548">
+    <div class="coming-soon">Coming Soon</div>
+    <h1 class="title"><span>Fast Accs</span></h1>
+    <p class="subtitle">Something great is on the way. Stay tuned.</p>
+    <a href="/FAlogistics/" class="cta-btn">
+      FA Logistics <span class="cta-arrow">→</span>
+    </a>
+    <p class="footer-note">© 2026 Fast Accs</p>
+  </div>
+</body>
+</html>
