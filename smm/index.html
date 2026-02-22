@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastAccs SMM — Coming Soon</title>
+  <meta name="description" content="Your trusted marketplace for social media accounts. Verified credentials, secure payments, instant delivery.">
+  <meta name="theme-color" content="#07090C">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fastaccs.com/smm/">
+  <meta property="og:site_name" content="FASTACCS">
+  <meta property="og:title" content="FastAccs SMM — Coming Soon">
+  <meta property="og:description" content="Your trusted marketplace for social media accounts. Verified credentials, secure payments, instant delivery.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/fa-technologies-LTD/fastaccs-web/master/assets/fa-logo-green-black-bg.png">
+  <meta property="og:image:width" content="898">
+  <meta property="og:image:height" content="898">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="FastAccs SMM — Coming Soon">
+  <meta name="twitter:description" content="Your trusted marketplace for social media accounts. Verified credentials, secure payments, instant delivery.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/fa-technologies-LTD/fastaccs-web/master/assets/fa-logo-green-black-bg.png">
+
+  <link rel="icon" type="image/png" href="../assets/fa-mark-white-transparent.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #07090C;
+      --text: rgba(255,255,255,0.92);
+      --text-muted: rgba(255,255,255,0.68);
+      --text-dim: rgba(255,255,255,0.50);
+      --border: rgba(255,255,255,0.10);
+      --border-2: rgba(255,255,255,0.14);
+      --green: #05D471;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: linear-gradient(180deg, #07090C 0%, #050607 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      text-align: center;
+      padding: 48px 24px 32px;
+      max-width: 520px;
+      width: 100%;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-dim);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.2s ease;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 0.1s forwards;
+    }
+    .back:hover { color: var(--text-muted); }
+
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: rgba(5,212,113,0.10);
+      border: 1px solid rgba(5,212,113,0.22);
+      color: var(--green);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 0.2s forwards;
+    }
+
+    .title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 0.3s forwards;
+    }
+    .title span {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 40%, var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .copy {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 0.4s forwards;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.5s ease-out 0.5s forwards;
+    }
+
+    .cta {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cta:hover { transform: translateY(-2px); }
+
+    .cta-primary {
+      background: var(--green);
+      color: #07090C;
+    }
+    .cta-primary:hover { box-shadow: 0 6px 20px rgba(5,212,113,0.30); }
+
+    .cta-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .cta-secondary:hover { border-color: var(--border-2); color: var(--text); }
+
+    .footer {
+      margin-top: 56px;
+      font-size: 11px;
+      color: var(--text-dim);
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 0.6s forwards;
+    }
+    .footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+    }
+    .footer a:hover { color: var(--text-muted); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .title { font-size: 30px; }
+      .copy { font-size: 14px; }
+      .cta { padding: 11px 20px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a href="/" class="back">← fastaccs.com</a>
+
+    <div class="badge">Coming Soon</div>
+    <h1 class="title"><span>FastAccs SMM</span></h1>
+    <p class="copy">Your trusted marketplace for social media accounts.<br>Verified credentials, secure payments, instant delivery.</p>
+
+    <div class="cta-group">
+      <a href="https://chat.whatsapp.com/L4pqTeTiKIF9AXcbpvMLCo" class="cta cta-primary" target="_blank" rel="noopener noreferrer">
+        Join the Community&ensp;→
+      </a>
+      <a href="/" class="cta cta-secondary">Back to home</a>
+    </div>
+
+    <p class="footer">© 2026 <a href="/">FA Technologies LTD</a></p>
+  </div>
+</body>
+</html>
