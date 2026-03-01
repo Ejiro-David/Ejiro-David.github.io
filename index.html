@@ -49,7 +49,6 @@
       --border-2: rgba(255,255,255,0.14);
       --surface: rgba(255,255,255,0.04);
       --green: #05D471;
-      --gold: #C9921A;
       --blue: #696DFA;
       --blue-light: #AAADFF;
     }
@@ -94,7 +93,7 @@
       animation: fadeIn 0.6s ease-out 0.2s forwards;
     }
     .brand span {
-      background: linear-gradient(135deg, rgba(255,255,255,0.95) 40%, var(--blue));
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 30%, var(--green));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -172,10 +171,10 @@
       border-radius: 6px;
     }
 
-    .badge-live-gold {
-      background: rgba(201,146,26,0.12);
-      border: 1px solid rgba(201,146,26,0.25);
-      color: var(--gold);
+    .badge-live-white {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.75);
     }
 
     .badge-soon {
@@ -188,7 +187,7 @@
     .trusted-by-customers {
       margin: 32px 0;
       padding-top: 24px;
-      border-top: 1px solid rgba(201,146,26,0.25);
+      border-top: 1px solid rgba(255,255,255,0.10);
       opacity: 0;
       animation: fadeUp 0.6s ease-out 0.5s forwards;
     }
@@ -260,11 +259,11 @@
 
     <div class="products">
       <a href="/logistics/" class="product">
-        <span class="badge-live badge-live-gold">Live</span>
-        <div class="product-icon" style="background: rgba(201,146,26,0.12); border: 1px solid rgba(201,146,26,0.22);">
-          <svg width="20" height="20" fill="none" stroke="#C9921A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span class="badge-live badge-live-white">Live</span>
+        <div class="product-icon" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);">
+          <svg width="20" height="20" fill="none" stroke="rgba(255,255,255,0.80)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
-        <div class="product-name" style="color: var(--gold);">FA Logistics</div>
+        <div class="product-name">FA Logistics</div>
         <div class="product-desc">Worldwide Gift Delivery. Send&nbsp;Love, Instantly, Anywhere.</div>
       </a>
 
