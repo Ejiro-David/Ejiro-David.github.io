@@ -1,525 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='22' font-family='monospace' font-weight='bold' fill='%234A9B7F'>%3E_</text></svg>">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>easyLogin-2FA</title>
-    <script src="https://cdn.jsdelivr.net/npm/otplib/otplib-browser.min.js"></script>
-
-    <!-- Google Analytics (GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JKR6RPV56"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-3JKR6RPV56');
-    </script>
-
-    
-    <!-- Essential SEO -->
-<meta name="description" content="easyLogin — a fast, minimalist TOTP 2FA generator. Instantly generate secure one-time codes from any Base32 secret. No signup, no clutter, 100% private.">
-<meta name="keywords" content="2FA, TOTP, authenticator, easy login, Base32, otp generator, totp generator, easyLogin">
-<meta name="author" content="teerex 🦖">
-
-<!-- Open Graph (Improves link previews on WhatsApp, Twitter, Facebook) -->
-<meta property="og:title" content="easyLogin™ — built by teerex 🦖">
-<meta property="og:description" content="Instant 2FA (TOTP) generator. Paste your secret, get your login code. Clean, private, fast.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://fastaccs.com/tools/easylogin/">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="easyLogin™ — built by teerex 🦖">
-<meta name="twitter:description" content="Minimal, fast 2FA code generator. Built for speed, privacy, and simplicity.">
-
-<!-- Mobile & Crawlers -->
-<meta name="theme-color" content="#07090C">
-<meta name="robots" content="index, follow">
-<meta name="googlebot" content="index, follow">
-
-<!-- Canonical URL -->
-<link rel="canonical" href="https://fastaccs.com/tools/easylogin/">
-
-<!-- Structured Data (Boosts Google SEO) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "easyLogin",
-  "url": "https://fastaccs.com/tools/easylogin/",
-  "description": "A lightweight TOTP 2FA generator that instantly creates secure one-time login codes.",
-  "applicationCategory": "SecurityApplication",
-  "operatingSystem": "All",
-  "creator": {
-    "@type": "Person",
-    "name": "teerex"
-  }
-}
-</script>
-
-
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Open+Sans:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="fa-style.css">
-
-    <style>
-        /* All styles are now in fa-style.css - this tag is kept for any inline styles if needed */
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>easyLogin - Fast Accounts</title>
+  <link rel="stylesheet" href="fa-style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="page-wrapper">
-        <div>
-            <div class="page-title"> easyLogin™ </div>
-            <div class="container">
-                <div id="mainDisplay">
-                    <!-- Dynamic content will be inserted here -->
-                </div>
-                
-                <div id="manualEntry" style="display: none;">
-                    <div class="input-group">
-                        <input 
-                            type="text" 
-                            id="secretInput" 
-                            placeholder="Paste Base32 secret here (A-Z, 2-7)" 
-                            autocomplete="off"
-                            autocapitalize="off"
-                            autocorrect="off"
-                            spellcheck="false"
-                        />
-                        <div class="input-hint">Typically 16-32 characters, letters A-Z and numbers 2-7 only</div>
-                        <div id="inputError" class="error-message"></div>
-                    </div>
-                    <div class="action-buttons">
-                        <button id="generateBtn" onclick="startFromInput()">GENERATE</button>
-                        <button id="clearBtn" onclick="clearInput()" class="clear-btn" disabled>CLEAR</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="marketing-section">
-                <p class="marketing-headline">Need social media accounts?</p>
-                <p class="marketing-subtext" style="margin-bottom: 20px; opacity: 1; font-size: 0.85rem;">Buy verified accounts from a trusted marketplace — instant delivery, secure payments.</p>
-                <a href="https://fastaccs.com" class="marketing-link" target="_blank" rel="noopener noreferrer">SHOP FASTACCS →</a>
-                <a href="https://chat.whatsapp.com/L4pqTeTiKIF9AXcbpvMLCo" class="marketing-link-secondary" target="_blank" rel="noopener noreferrer" onclick="gtag('event', 'join_community', {'event_category': 'engagement', 'event_label': 'whatsapp_community', 'page': 'easylogin'})">JOIN COMMUNITY</a>
-                <p class="marketing-subtext"></p>
-            </div>
-        </div>
+  <main class="app" aria-label="easyLogin app">
+    <header class="topbar">
+      <a class="brand" href="https://fastaccs.com" target="_blank" rel="noopener noreferrer" aria-label="Fast Accounts website">
+        <img class="brand-mark" src="fa-mark-white-transparent.png" alt="Fast Accounts logo">
+        <span class="brand-text">FAST ACCOUNTS</span>
+      </a>
+      <span class="chip">easyLogin&trade;</span>
+    </header>
+
+    <section class="panel hero" aria-label="EasyLogin code generator">
+      <div class="hero-icon" aria-hidden="true">&#128274;</div>
+      <h1 class="hero-title">Enter your secret key</h1>
+      <p class="hero-subtitle">Paste your 2FA secret to generate login code</p>
+
+      <label class="sr-only" for="secret-input">Secret key</label>
+      <input id="secret-input" class="secret-input" type="text" placeholder="e.g. JBSWY3DPEHPK3PXP" autocomplete="off" spellcheck="false" inputmode="latin" aria-describedby="helper-text validation-msg" aria-invalid="false">
+      <span id="helper-text" class="sr-only">Base32 secret input</span>
+      <p id="validation-msg" class="validation-msg" role="status" aria-live="polite"></p>
+
+      <button type="button" class="generate-btn" id="generate-btn">+ Generate Code</button>
+    </section>
+
+    <div class="meta-pills" aria-label="Key features">
+      <span class="meta-item"><span class="meta-dot" aria-hidden="true"></span>Standard 2FA code</span>
+      <span class="meta-sep" aria-hidden="true"></span>
+      <span class="meta-item"><span class="meta-dot" aria-hidden="true"></span>Works on your device</span>
+      <span class="meta-sep" aria-hidden="true"></span>
+      <span class="meta-item"><span class="meta-dot" aria-hidden="true"></span>Nothing sent online</span>
     </div>
 
-<div class="page-footer">
-    <a href="https://www.rottenlibrary.net/#gsc.tab=0" class="trex-link" target="_blank">by teerex 🦖</a>
-</div>
+    <section class="panel promo" aria-label="Marketing section">
+      <div class="promo-head">
+        <div>
+          <p class="promo-kicker">Need social media accounts?</p>
+          <h2 class="promo-title">Chat us on WhatsApp.</h2>
+          <p class="promo-lines"><strong>IG &middot; TikTok &middot; X &middot; Facebook &middot; Telegram</strong><br><strong>Verified &middot; Blue tick &middot; Instant delivery</strong></p>
+        </div>
+      </div>
 
-    <div id="copyToast" class="toast">Code copied! ✓</div>
+      <a class="message-btn" href="https://wa.link/fast_accounts" target="_blank" rel="noopener noreferrer" aria-label="Message us on WhatsApp">
+        <svg class="wa-inline" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M27.3 4.6A15.3 15.3 0 0016.2 0C7.8 0 .9 6.8.9 15.2c0 2.7.7 5.3 2 7.6L0 32l9.5-2.8c2.2 1.2 4.7 1.8 7.2 1.8h.1c8.4 0 15.3-6.8 15.3-15.2 0-4.1-1.6-7.9-4.8-11.2zM16.8 28.3h-.1c-2.2 0-4.4-.6-6.2-1.8l-.4-.2-5.6 1.6 1.7-5.4-.3-.5a12.4 12.4 0 01-1.9-6.6c0-6.9 5.7-12.6 12.7-12.6 3.4 0 6.6 1.3 9 3.7a12.5 12.5 0 013.7 9c0 6.9-5.7 12.6-12.6 12.6zm6.9-9.5c-.4-.2-2.5-1.2-2.9-1.3-.4-.2-.7-.2-.9.2-.2.4-1.1 1.3-1.3 1.6-.2.2-.5.3-.9.1-.4-.2-1.9-.7-3.6-2.2-1.3-1.2-2.2-2.6-2.5-3.1-.3-.4 0-.7.2-.9.2-.2.4-.5.6-.7.2-.2.2-.4.3-.7.1-.2 0-.4 0-.6 0-.2-.9-2.2-1.2-3-.3-.8-.6-.6-.9-.6h-.8c-.3 0-.7.1-1 .5-.3.4-1.4 1.3-1.4 3.2s1.4 3.7 1.6 4c.2.3 2.8 4.4 6.9 6.1 4 1.7 4 1.1 4.8 1s2.5-1 2.8-2 .3-1.9.2-2c-.1-.1-.3-.2-.7-.4z"/>
+        </svg>
+        <span>Message Us Now</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="community-btn" href="https://chat.whatsapp.com/L4pqTeTiKIF9AXcbpvMLCo" target="_blank" rel="noopener noreferrer">Join The Community</a>
+    </section>
+  </main>
 
-    <script>
-        let generateToken;
-        let currentInterval;
+  <footer class="footer">
+    <p>A tool for Fast Accounts &middot; Built by teerex</p>
+  </footer>
 
-        function cleanSecretInput(secret) {
-            // Remove spaces, dashes, underscores and convert to uppercase
-            return secret.replace(/[\s\-_]/g, '').toUpperCase();
+  <script>
+    (function () {
+      var input = document.getElementById("secret-input");
+      var generateBtn = document.getElementById("generate-btn");
+      var validationMsg = document.getElementById("validation-msg");
+
+      function sanitizeSecret(value) {
+        return value.toUpperCase().replace(/\s+/g, "").replace(/[^A-Z2-7]/g, "");
+      }
+
+      function decodeValue(value) {
+        try {
+          return decodeURIComponent(value);
+        } catch (_error) {
+          return value;
+        }
+      }
+
+      function getPathSecret() {
+        var path = window.location.pathname || "";
+        var trimmed = path.replace(/\/+$/, "");
+        if (!trimmed) {
+          return "";
         }
 
-        function isValidBase32(str) {
-            // More comprehensive Base32 validation
-            const base32Regex = /^[A-Z2-7]+=*$/i;
-            if (!base32Regex.test(str)) return false;
-            
-            // Additional validation: should be reasonable length for 2FA (usually 16, 32, etc.)
-            const cleanStr = str.replace(/=+$/, ''); // Remove padding
-            return cleanStr.length >= 16 && cleanStr.length <= 64;
+        var segments = trimmed.split("/").filter(Boolean);
+        if (!segments.length) {
+          return "";
         }
 
-        function validateInput(secret) {
-            const secretInput = document.getElementById('secretInput');
-            const errorElement = document.getElementById('inputError');
-            const generateBtn = document.getElementById('generateBtn');
-            
-            // Clear previous errors
-            secretInput.classList.remove('input-error', 'shake');
-            errorElement.classList.remove('show');
-            
-            if (!secret || secret.trim() === '') {
-                showError('Please enter a 2FA secret key');
-                return false;
-            }
-            
-            // Clean the input first (remove spaces, dashes, underscores)
-            const cleanedSecret = cleanSecretInput(secret);
-            
-            // Check for common mistakes
-            if (cleanedSecret.length < 16) {
-                showError('Secret seems too short. 2FA keys are usually 16+ characters');
-                return false;
-            }
-            
-            if (cleanedSecret.length > 64) {
-                showError('Secret seems too long. Please check your input');
-                return false;
-            }
-            
-            // Check for obviously invalid patterns
-            if (/^\d+$/.test(cleanedSecret)) {
-                showError('This appears to be only numbers. 2FA secrets use Base32 (A-Z, 2-7)');
-                return false;
-            }
-            
-            if (!isValidBase32(cleanedSecret)) {
-                showError('Invalid format. Use only Base32 characters: A-Z and 2-7');
-                return false;
-            }
-            
-            return true;
+        var last = segments[segments.length - 1];
+        var lastLower = last.toLowerCase();
+        if (!last || lastLower === "easylogin" || lastLower === "index.html" || last.indexOf(".") !== -1) {
+          return "";
         }
 
-        function showError(message) {
-            const secretInput = document.getElementById('secretInput');
-            const errorElement = document.getElementById('inputError');
-            
-            secretInput.classList.add('input-error', 'shake');
-            errorElement.textContent = message;
-            errorElement.classList.add('show');
-            
-            // Remove shake animation after it completes
-            setTimeout(() => {
-                secretInput.classList.remove('shake');
-            }, 500);
+        return decodeValue(last);
+      }
+
+      function resolveSecretFromUrl() {
+        var params = new URLSearchParams(window.location.search);
+        var candidate = params.get("secret");
+
+        if (!candidate && window.location.hash && window.location.hash.length > 1) {
+          candidate = decodeValue(window.location.hash.slice(1));
         }
 
-        function startFromInput() {
-            const secret = document.getElementById('secretInput').value.trim();
-            const generateBtn = document.getElementById('generateBtn');
-            
-            if (!validateInput(secret)) {
-                return;
-            }
-            
-            // Clean the secret before using it
-            const cleanedSecret = cleanSecretInput(secret);
-            
-            // Add loading state
-            generateBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;animation:spin 1s linear infinite"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg> GENERATING';
-            generateBtn.disabled = true;
-            
-            // Small delay to show loading state
-            setTimeout(() => {
-                renderCode(cleanedSecret);
-                generateBtn.innerHTML = 'GENERATE';
-                generateBtn.disabled = false;
-            }, 100);
+        if (!candidate) {
+          candidate = getPathSecret();
         }
 
-        function renderCode(secret) {
-            if (!secret) {
-                document.getElementById('manualEntry').style.display = "block";
-                document.getElementById('mainDisplay').innerHTML = `
-                    <div style="margin: 20px 0; opacity: 0.8;">
-                        <p>Enter your 2FA secret key to generate codes</p>
-                    </div>
-                `;
-                return;
-            }
+        return candidate || "";
+      }
 
-            try {
-                // Clear any existing interval
-                if (currentInterval) {
-                    clearInterval(currentInterval);
-                }
+      function showValidation(text) {
+        validationMsg.textContent = text;
+        validationMsg.classList.add("show");
+        input.setAttribute("aria-invalid", "true");
+      }
 
-                const token = generateToken(secret);
-                document.getElementById('manualEntry').style.display = "none";
-                const mainDiv = document.getElementById('mainDisplay');
-                
-                // Mask secret for display (show first 4 and last 4 chars with dots)
-                const maskSecret = (str) => {
-                    if (str.length <= 8) return str;
-                    return `${str.substring(0, 4)}•••••••${str.substring(str.length - 4)}`;
-                };
-                const displaySecret = maskSecret(secret);
+      function clearValidation() {
+        validationMsg.textContent = "";
+        validationMsg.classList.remove("show");
+        input.setAttribute("aria-invalid", "false");
+      }
 
-                mainDiv.innerHTML = `
-                    <div class="code">${formatCode(token)}</div>
-                    <div class="timer">⏱ Expires in <span id="countdown">30</span>s</div>
-                    <div class="secret-display">
-                        Secret: ${displaySecret}
-                    </div>
-                    <div class="action-buttons">
-                        <button onclick="copyCode()" class="copy-btn">COPY <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-left:4px"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button>
-                        <button onclick="goHome()" class="home-btn">HOME <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-left:4px"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
-                    </div>
-                `;
-
-                // Start the countdown immediately
-                updateCountdown(secret);
-
-                // Set up interval for countdown
-                currentInterval = setInterval(() => updateCountdown(secret), 1000);
-
-            } catch (error) {
-                document.getElementById('mainDisplay').innerHTML = `
-                    <div style="color: var(--error); margin: 20px 0;">
-                        <p style="font-weight: bold;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF4D4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:4px"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>${error.message}</p>
-                        <p style="font-size: 0.9em; margin-top: 10px; color: var(--neutral-medium);">
-                            Please check your secret key and try again.
-                        </p>
-                    </div>
-                `;
-                document.getElementById('manualEntry').style.display = "block";
-                document.getElementById('secretInput').classList.add('input-error');
-            }
+      function applySecretFromUrl() {
+        var candidate = resolveSecretFromUrl();
+        if (!candidate) {
+          return false;
         }
 
-        function formatCode(code) {
-            // Add spacing for better readability
-            return code.replace(/(\d{3})(\d{3})/, '$1 $2');
+        var sanitized = sanitizeSecret(candidate);
+        if (!sanitized) {
+          showValidation("The link secret has unsupported characters.");
+          return false;
         }
 
-        function updateCountdown(secret) {
-            const remaining = 30 - Math.floor(Date.now() / 1000) % 30;
-            const countdownElement = document.getElementById('countdown');
-            const timerElement = document.querySelector('.timer');
-            const codeElement = document.querySelector('.code');
-            
-            if (countdownElement) {
-                countdownElement.textContent = remaining;
-                
-                // Update token if we're at the start of a new period
-                if (remaining === 30) {
-                    try {
-                        const token = generateToken(secret);
-                        if (codeElement) {
-                            codeElement.textContent = formatCode(token);
-                        }
-                    } catch (error) {
-                        console.error('Error updating token:', error);
-                    }
-                }
-                
-                // Dynamic timer styling - color the entire timer element
-                if (remaining <= 5) {
-                    if (timerElement) {
-                        timerElement.style.setProperty('color', 'var(--status-error)', 'important');
-                        timerElement.style.animation = 'pulse 0.5s infinite';
-                        timerElement.style.fontWeight = 'bold';
-                    }
-                } else if (remaining <= 10) {
-                    if (timerElement) {
-                        timerElement.style.setProperty('color', 'var(--status-warning)', 'important');
-                        timerElement.style.animation = 'pulse 1s infinite';
-                        timerElement.style.fontWeight = 'bold';
-                    }
-                } else if (remaining <= 20) {
-                    if (timerElement) {
-                        timerElement.style.setProperty('color', 'var(--status-info)', 'important');
-                        timerElement.style.animation = 'none';
-                        timerElement.style.fontWeight = '600';
-                    }
-                } else {
-                    if (timerElement) {
-                        timerElement.style.setProperty('color', 'var(--status-success)', 'important');
-                        timerElement.style.animation = 'none';
-                        timerElement.style.fontWeight = '600';
-                    }
-                }
-            }
+        input.value = sanitized;
+        clearValidation();
+        input.focus();
+        input.setSelectionRange(sanitized.length, sanitized.length);
+        generateBtn.click();
+        return true;
+      }
+
+      applySecretFromUrl();
+      window.addEventListener("hashchange", applySecretFromUrl);
+
+      input.addEventListener("input", function () {
+        var raw = input.value;
+        var caret = typeof input.selectionStart === "number" ? input.selectionStart : raw.length;
+        var leftSanitized = sanitizeSecret(raw.slice(0, caret));
+        var sanitized = sanitizeSecret(raw);
+
+        if (raw !== sanitized) {
+          input.value = sanitized;
+          input.setSelectionRange(leftSanitized.length, leftSanitized.length);
+          showValidation("Use only letters A-Z and numbers 2-7.");
+        } else if (sanitized) {
+          clearValidation();
+        } else {
+          clearValidation();
         }
 
-        function copyCode() {
-            const codeElement = document.querySelector('.code');
-            if (!codeElement) return;
-            
-            const code = codeElement.textContent.replace(/\s/g, ''); // Remove spaces
-            navigator.clipboard.writeText(code).then(() => {
-                showToast('Code copied! ✓');
-            }).catch(err => {
-                console.error('Failed to copy code:', err);
-                showToast('Failed to copy code');
-            });
+        input.classList.remove("input-error");
+      });
+
+      generateBtn.addEventListener("click", function () {
+        if (!input.value.trim()) {
+          input.classList.add("input-error");
+          showValidation("Enter your 2FA secret to continue.");
+          window.setTimeout(function () {
+            input.classList.remove("input-error");
+          }, 700);
+          input.focus();
+          return;
         }
 
-        function showToast(message) {
-            const toast = document.getElementById('copyToast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
-        }
-
-        function clearInput() {
-            document.getElementById('secretInput').value = '';
-            document.getElementById('secretInput').classList.remove('input-error');
-            document.getElementById('inputError').classList.remove('show');
-            document.getElementById('secretInput').focus();
-            // disable clear when nothing to clear
-            const clearBtn = document.getElementById('clearBtn');
-            if (clearBtn) clearBtn.disabled = true;
-        }
-
-        function goHome() {
-            if (currentInterval) {
-                clearInterval(currentInterval);
-            }
-            window.location.href = '/tools/easylogin/';
-        }
-
-        // Handle paste events for validation
-        document.addEventListener('DOMContentLoaded', function() {
-            const secretInput = document.getElementById('secretInput');
-            const clearBtn = document.getElementById('clearBtn');
-            const generateBtn = document.getElementById('generateBtn');
-            if (clearBtn) clearBtn.disabled = true; // start muted
-            if (generateBtn) generateBtn.disabled = true; // start disabled
-
-            if (secretInput) {
-                // On paste: auto-clean the input (remove spaces, dashes, underscores)
-                secretInput.addEventListener('paste', function(e) {
-                    setTimeout(() => {
-                        const pastedValue = e.target.value || '';
-                        // Clean the input automatically
-                        const cleanedValue = cleanSecretInput(pastedValue);
-                        if (cleanedValue !== pastedValue) {
-                            this.value = cleanedValue;
-                        }
-                        // keep UI clean until user explicitly generates
-                        secretInput.classList.remove('input-error');
-                        document.getElementById('inputError').classList.remove('show');
-                        if (clearBtn) clearBtn.disabled = !cleanedValue.trim();
-                        
-                        // Enable generate button only if input looks valid
-                        const generateBtn = document.getElementById('generateBtn');
-                        const isValid = cleanedValue.length >= 16 && /^[A-Z2-7]+=*$/i.test(cleanedValue);
-                        if (generateBtn) generateBtn.disabled = !isValid;
-                    }, 0);
-                });
-
-                // Auto-clean on input (as user types)
-                secretInput.addEventListener('input', function() {
-                    const currentValue = this.value;
-                    const cleanedValue = cleanSecretInput(currentValue);
-                    if (cleanedValue !== currentValue) {
-                        this.value = cleanedValue;
-                    }
-                    
-                    const generateBtn = document.getElementById('generateBtn');
-                    const inputValue = this.value.trim();
-                    
-                    if (inputValue) {
-                        this.classList.remove('input-error');
-                        document.getElementById('inputError').classList.remove('show');
-                        if (clearBtn) clearBtn.disabled = false;
-                        
-                        // Enable generate button only if input looks valid
-                        const isValid = inputValue.length >= 16 && /^[A-Z2-7]+=*$/i.test(inputValue);
-                        if (generateBtn) generateBtn.disabled = !isValid;
-                    } else {
-                        if (clearBtn) clearBtn.disabled = true;
-                        if (generateBtn) generateBtn.disabled = true;
-                    }
-                });
-
-                // Enter key support
-                secretInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        startFromInput();
-                    }
-                });
-
-                // Ensure clean state on load
-                secretInput.classList.remove('input-error');
-                document.getElementById('inputError').classList.remove('show');
-                // Auto-focus if manual entry visible
-                if (document.getElementById('manualEntry').style.display !== 'none') {
-                    secretInput.focus();
-                }
-            }
-        });
-
-        (function initTOTP() {
-            if (!window.otplib) {
-                document.getElementById('mainDisplay').innerHTML = 
-                    "<p class='loading-dots'>Loading TOTP library</p>";
-                setTimeout(() => window.location.reload(), 2000);
-                return;
-            }
-
-            const { authenticator } = window.otplib;
-
-            generateToken = function(secret) {
-                if (!secret) throw new Error('Secret is required');
-                if (!isValidBase32(secret)) throw new Error('Invalid Base32 format');
-                
-                try {
-                    return authenticator.generate(secret);
-                } catch (error) {
-                    throw new Error('Invalid secret key');
-                }
-            };
-
-            // Extract secret from URL
-            // Method 1: Hash (#SECRET) — never sent to server, most private
-            // Method 2: Query param (?secret=XXX)
-            // Share links: fastaccs.com/tools/easylogin/#YOUR_SECRET
-            function extractSecretFromURL() {
-                // Hash method — preferred, most private
-                const hashSecret = window.location.hash.slice(1).trim();
-                if (hashSecret) {
-                    return cleanSecretInput(hashSecret);
-                }
-
-                // Query param fallback
-                const urlParams = new URLSearchParams(window.location.search);
-                const querySecret = urlParams.get('secret');
-                if (querySecret && querySecret.trim()) {
-                    return cleanSecretInput(querySecret.trim());
-                }
-
-                return null;
-            }
-
-            const extractedSecret = extractSecretFromURL();
-            
-            if (extractedSecret) {
-                renderCode(extractedSecret);
-            } else {
-                // Show the manual entry form that already exists in the DOM
-                document.getElementById('manualEntry').style.display = "block";
-                // ensure clean error state on startup
-                const secretInput = document.getElementById('secretInput');
-                if (secretInput) {
-                    secretInput.classList.remove('input-error');
-                    document.getElementById('inputError').classList.remove('show');
-                    secretInput.focus();
-                }
-            }
-        })();
-
-        // Handle page visibility changes to prevent timer drift
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden && currentInterval) {
-                // Page became visible, refresh the code immediately
-                const secretInput = document.getElementById('secretInput');
-                
-                // Use same extraction logic as init
-                function getCurrentSecret() {
-                    const hashSecret = window.location.hash.slice(1).trim();
-                    if (hashSecret) return cleanSecretInput(hashSecret);
-
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const querySecret = urlParams.get('secret');
-                    if (querySecret && querySecret.trim()) return cleanSecretInput(querySecret.trim());
-
-                    return secretInput ? cleanSecretInput(secretInput.value.trim()) : '';
-                }
-                
-                const currentSecret = getCurrentSecret();
-                if (currentSecret) {
-                    updateCountdown(currentSecret);
-                }
-            }
-        });
-    </script>
+        clearValidation();
+      });
+    })();
+  </script>
 </body>
 </html>
