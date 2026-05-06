@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Lazer — FASTACCS Tools</title>
+    <meta name="description" content="Agnostic credential parser to CSV. Handles varied field formats and custom headers directly in your browser.">
+    <meta name="theme-color" content="#0a0e27">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fastaccs.com/tools/csv-lazer/">
+    <meta property="og:title" content="CSV Lazer — FASTACCS Tools">
+    <meta property="og:description" content="Agnostic credential parser to CSV. Handles varied field formats and custom headers directly in your browser.">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="CSV Lazer — FASTACCS Tools">
+    <meta name="twitter:description" content="Agnostic credential parser to CSV. Handles varied field formats and custom headers directly in your browser.">
+    <link rel="canonical" href="https://fastaccs.com/tools/csv-lazer/">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='22' font-family='monospace' font-weight='bold' fill='%2300ff66'>%3E_</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0e27;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #00ff00;
+        }
+
+        .shell {
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            color: #7ef9b3;
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border: 1px solid rgba(0, 255, 136, 0.35);
+            padding: 7px 10px;
+            background: rgba(0, 255, 136, 0.08);
+        }
+
+        .back-link:hover {
+            background: rgba(0, 255, 136, 0.16);
+            border-color: rgba(0, 255, 136, 0.6);
+        }
+
+        .container {
+            background: #0f1330;
+            border-radius: 0;
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.2), inset 0 0 20px rgba(0, 255, 0, 0.05);
+            max-width: 1400px;
+            width: 100%;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #00ff00;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            border-bottom: 2px solid rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.6), 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.8;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+
+        .logo {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 0;
+            margin-right: 12px;
+            vertical-align: middle;
+            border: 2px solid rgba(0, 255, 0, 0.5);
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00ff00;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #00ff00;
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+        }
+
+        textarea {
+            flex: 1;
+            min-height: 400px;
+            padding: 16px;
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            border-radius: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            resize: vertical;
+            transition: all 0.3s;
+            background: #0a0e27;
+            color: #00ff00;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #00ff00;
+            box-shadow: 0 0 0 3px rgba(0, 255, 0, 0.2), 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        textarea::placeholder {
+            color: #00aa00;
+            opacity: 0.6;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: 2px solid #00ff00;
+            border-radius: 0;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: #0a0e27;
+            color: #00ff00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        }
+
+        .btn-parse {
+            background: rgba(0, 255, 0, 0.1);
+            flex: 1;
+        }
+
+        .btn-parse:hover {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 10px rgba(0, 255, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-parse:active {
+            transform: translateY(0);
+        }
+
+        .btn-download {
+            background: rgba(0, 255, 0, 0.1);
+            flex: 1;
+        }
+
+        .btn-download:hover {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 10px rgba(0, 255, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
+        .btn-download:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-clear {
+            background: rgba(0, 255, 0, 0.05);
+            border-color: rgba(0, 255, 0, 0.4);
+        }
+
+        .btn-clear:hover {
+            background: rgba(0, 255, 0, 0.15);
+            border-color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .output-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-container {
+            flex: 1;
+            background: #0a0e27;
+            border-radius: 0;
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.05);
+        }
+
+        .table-wrapper {
+            flex: 1;
+            overflow: auto;
+            max-height: 400px;
+        }
+
+        .csv-preview {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .csv-preview thead {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid rgba(0, 255, 0, 0.4);
+        }
+
+        .csv-preview th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+            border-right: 1px solid rgba(0, 255, 0, 0.2);
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.4);
+        }
+
+        .csv-preview th:last-child {
+            border-right: none;
+        }
+
+        .csv-preview td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+            word-break: break-word;
+            max-width: 200px;
+            color: #00dd00;
+        }
+
+        .csv-preview tbody tr:hover {
+            background: rgba(0, 255, 0, 0.08);
+        }
+
+        .empty-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #00aa00;
+            font-size: 14px;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+
+        .stats {
+            background: rgba(0, 255, 0, 0.08);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 0;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-size: 12px;
+            color: #00ff00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+
+        .stats strong {
+            color: #00ff00;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
+        }
+
+        .error-message {
+            background: rgba(255, 0, 100, 0.1);
+            border: 1px solid rgba(255, 0, 100, 0.4);
+            color: #ff0064;
+            padding: 12px 16px;
+            border-radius: 0;
+            margin-top: 12px;
+            font-size: 12px;
+            display: none;
+            text-shadow: 0 0 5px rgba(255, 0, 100, 0.4);
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.4);
+            color: #00ff00;
+            padding: 12px 16px;
+            border-radius: 0;
+            margin-top: 12px;
+            font-size: 12px;
+            display: none;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.4);
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .warning-message {
+            background: rgba(255, 196, 0, 0.1);
+            border: 1px solid rgba(255, 196, 0, 0.45);
+            color: #ffd24d;
+            padding: 12px 16px;
+            border-radius: 0;
+            margin-top: 12px;
+            font-size: 12px;
+            display: none;
+            text-shadow: 0 0 5px rgba(255, 196, 0, 0.35);
+            line-height: 1.45;
+            white-space: pre-line;
+        }
+
+        .warning-message.show {
+            display: block;
+        }
+
+        .info-box {
+            background: rgba(0, 255, 0, 0.08);
+            border-left: 4px solid #00ff00;
+            padding: 12px 16px;
+            border-radius: 0;
+            font-size: 12px;
+            color: #00ff00;
+            margin-bottom: 16px;
+            line-height: 1.5;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+            text-shadow: 0 0 3px rgba(0, 255, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+                align-items: flex-start;
+            }
+
+            .shell {
+                max-width: none;
+            }
+
+            .back-link {
+                margin-bottom: 8px;
+            }
+
+            .header {
+                padding: 18px 14px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .header p {
+                font-size: 12px;
+            }
+
+            .content {
+                padding: 14px;
+                gap: 16px;
+            }
+
+            textarea {
+                min-height: 230px;
+                font-size: 12px;
+            }
+
+            .controls {
+                position: sticky;
+                bottom: 0;
+                background: #0f1330;
+                padding-top: 8px;
+            }
+
+            button {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+
+            .table-wrapper {
+                max-height: 320px;
+            }
+
+            .csv-preview th,
+            .csv-preview td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <a class="back-link" href="/tools/">← All Tools</a>
+        <div class="container">
+            <div class="header">
+                <h1>⚡ FAST ACCOUNTS ⚡</h1>
+                <p>[ CREDENTIAL PARSER & CSV GENERATOR ]</p>
+            </div>
+
+        <div class="content">
+            <!-- Input Section -->
+            <div class="section">
+                <div class="section-title">>>> PASTE DATA <<<</div>
+                <div class="info-box">
+                    $ Parse any credential format. Detects platform & generates clean CSV
+                </div>
+                <textarea id="inputText" placeholder="$ paste credential data here...&#10;&#10;Supports:&#10;• Twitter/X (with email-password, 2FA)&#10;• TikTok (with email)&#10;• Facebook (with 2FA)&#10;• And more..."></textarea>
+                <div class="controls">
+                    <button class="btn-parse" onclick="parseData()">⚡ Parse & Generate</button>
+                    <button class="btn-clear" onclick="clearAll()">Clear</button>
+                </div>
+                <div class="error-message" id="errorMessage"></div>
+                <div class="success-message" id="successMessage"></div>
+                <div class="warning-message" id="warningMessage"></div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="output-section">
+                <div class="section-title">>>> CSV PREVIEW <<<</div>
+                <div class="preview-container">
+                    <div class="table-wrapper">
+                        <table class="csv-preview" id="previewTable">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="empty-state" id="emptyState">
+                            $ awaiting parsed data...
+                        </div>
+                    </div>
+                </div>
+                <div class="stats" id="stats" style="display: none;">
+                    <strong id="statsText"></strong>
+                </div>
+                <button class="btn-download" id="downloadBtn" onclick="downloadCSV()" disabled style="margin-top: 16px;">
+                    ⬇️  DOWNLOAD CSV
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        let parsedData = [];
+        let csvHeaders = [];
+        let parseWarnings = [];
+
+        function parseData() {
+            const input = document.getElementById('inputText').value.trim();
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            const warningMsg = document.getElementById('warningMessage');
+
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+            warningMsg.classList.remove('show');
+
+            if (!input) {
+                errorMsg.textContent = '❌ [ERROR] No data provided. Paste credential data to begin.';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            try {
+                const result = intelligentParse(input);
+                parsedData = result.accounts;
+                parseWarnings = result.warnings;
+
+                // Extract all unique headers
+                const headersSet = new Set();
+                parsedData.forEach(account => {
+                    Object.keys(account).forEach(key => headersSet.add(key));
+                });
+
+                // Define priority order
+                const priorityOrder = ['profile_link', 'username', 'password', 'email', 'email_password', 'secondary_email', 'phone', '2fa_link'];
+                csvHeaders = [];
+
+                // Add headers in priority order
+                priorityOrder.forEach(header => {
+                    if (headersSet.has(header)) {
+                        csvHeaders.push(header);
+                        headersSet.delete(header);
+                    }
+                });
+
+                // Add remaining headers alphabetically
+                Array.from(headersSet).sort().forEach(header => {
+                    csvHeaders.push(header);
+                });
+
+                displayPreview();
+
+                const warningSuffix = parseWarnings.length > 0 ? ` | ${parseWarnings.length} warning(s)` : '';
+                successMsg.textContent = `✓ [SUCCESS] Parsed ${parsedData.length} account(s) | ${csvHeaders.length} field(s)${warningSuffix}`;
+                successMsg.classList.add('show');
+
+                renderWarnings(parseWarnings);
+                document.getElementById('downloadBtn').disabled = parsedData.length === 0;
+            } catch (error) {
+                errorMsg.textContent = `❌ [ERROR] ${error.message}`;
+                errorMsg.classList.add('show');
+            }
+        }
+
+        function intelligentParse(input) {
+            const warnings = [];
+            const accounts = [];
+            const urls = [];
+            const credentialBlocks = [];
+            const lines = input.split('\n');
+
+            let currentBlock = null;
+            let inCodeFence = false;
+            const unrecognizedLines = [];
+            const codeFenceLines = [];
+            const delayedUrlLines = [];
+
+            const closeCurrentBlock = () => {
+                if (currentBlock && Object.keys(currentBlock.fields).length > 0) {
+                    credentialBlocks.push(currentBlock);
+                }
+                currentBlock = null;
+            };
+
+            for (let i = 0; i < lines.length; i++) {
+                const lineNumber = i + 1;
+                const line = lines[i].trim();
+
+                if (line.startsWith('```')) {
+                    inCodeFence = !inCodeFence;
+                    closeCurrentBlock();
+                    continue;
+                }
+
+                if (inCodeFence) {
+                    if (line) {
+                        codeFenceLines.push(lineNumber);
+                    }
+                    continue;
+                }
+
+                if (line === '') {
+                    closeCurrentBlock();
+                    continue;
+                }
+
+                if (isDelimiter(line)) {
+                    closeCurrentBlock();
+                    continue;
+                }
+
+                if (isDecorativeLine(line)) {
+                    closeCurrentBlock();
+                    continue;
+                }
+
+                if (isUrl(line)) {
+                    if (currentBlock) {
+                        delayedUrlLines.push(lineNumber);
+                        closeCurrentBlock();
+                    }
+                    urls.push(line);
+                    continue;
+                }
+
+                const parsed = parseCredentialLine(line);
+                if (parsed) {
+                    const { key, value } = parsed;
+
+                    if (value === '') {
+                        warnings.push(`W105 line ${lineNumber}: Empty value for key "${key}" was ignored.`);
+                        continue;
+                    }
+
+                    if (!currentBlock) {
+                        currentBlock = { startLine: lineNumber, fields: {} };
+                    }
+
+                    if (Object.prototype.hasOwnProperty.call(currentBlock.fields, key)) {
+                        warnings.push(`W104 line ${lineNumber}: Duplicate key "${key}" in the same block; latest value kept.`);
+                    }
+
+                    currentBlock.fields[key] = value;
+                    continue;
+                }
+
+                unrecognizedLines.push(lineNumber);
+            }
+
+            closeCurrentBlock();
+
+            if (codeFenceLines.length > 0) {
+                warnings.push(`W112: Ignored ${codeFenceLines.length} line(s) inside markdown code fences at line(s) ${formatLineList(codeFenceLines)}.`);
+            }
+
+            if (unrecognizedLines.length > 0) {
+                warnings.push(`W103: Ignored ${unrecognizedLines.length} unrecognized line(s) at line(s) ${formatLineList(unrecognizedLines)}.`);
+            }
+
+            if (delayedUrlLines.length > 0) {
+                warnings.push(`W107: Found ${delayedUrlLines.length} link line(s) after credential parsing started at line(s) ${formatLineList(delayedUrlLines)}.`);
+            }
+
+            if (urls.length > credentialBlocks.length) {
+                const missing = urls.length - credentialBlocks.length;
+                warnings.push(`W101: ${urls.length} link(s) found vs ${credentialBlocks.length} credential block(s). Created ${missing} link-only row(s) for trailing unmatched link(s).`);
+            } else if (credentialBlocks.length > urls.length) {
+                const missing = credentialBlocks.length - urls.length;
+                warnings.push(`W102: ${credentialBlocks.length} credential block(s) found vs ${urls.length} link(s). Created ${missing} row(s) with empty "profile_link".`);
+            }
+
+            if (urls.length === 0 && credentialBlocks.length > 0) {
+                warnings.push('W110: No standalone link lines detected; rows were generated from labeled credential blocks only.');
+            }
+
+            if (credentialBlocks.length === 0 && urls.length > 0) {
+                warnings.push('W111: No labeled credential blocks detected; link-only rows were generated.');
+            }
+
+            const rowCount = Math.max(urls.length, credentialBlocks.length);
+            for (let idx = 0; idx < rowCount; idx++) {
+                const row = {};
+                const block = credentialBlocks[idx];
+                const blockFields = block ? block.fields : {};
+                const listLink = urls[idx] || '';
+
+                Object.assign(row, blockFields);
+
+                if (listLink && row.profile_link && row.profile_link !== listLink) {
+                    warnings.push(`W109 row ${idx + 1}: "profile_link" from credential field differed from link list; link list value was kept.`);
+                }
+
+                if (listLink) {
+                    row.profile_link = listLink;
+                } else if (!row.profile_link) {
+                    row.profile_link = '';
+                }
+
+                if (Object.keys(row).length > 0) {
+                    accounts.push(row);
+                }
+            }
+
+            return { accounts, warnings };
+        }
+
+        function isUrl(str) {
+            try {
+                const parsed = new URL(str);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            } catch {
+                return false;
+            }
+        }
+
+        function isDelimiter(str) {
+            return /^[-=*]{3,}$/.test(str);
+        }
+
+        function isDecorativeLine(str) {
+            return /^[-=* ]*profile\s+links\s*:/i.test(str);
+        }
+
+        function formatLineList(lines, maxShown = 16) {
+            const uniqueSorted = Array.from(new Set(lines)).sort((a, b) => a - b);
+            if (uniqueSorted.length <= maxShown) {
+                return uniqueSorted.join(', ');
+            }
+            const shown = uniqueSorted.slice(0, maxShown).join(', ');
+            const more = uniqueSorted.length - maxShown;
+            return `${shown} (+${more} more)`;
+        }
+
+        function parseCredentialLine(line) {
+            // Choose the earliest separator and split only once to preserve URL values.
+            const separators = ['-->', '=>', '::', '->', '|', ':', '='];
+            let bestIndex = -1;
+            let bestSeparator = '';
+
+            for (const sep of separators) {
+                const idx = line.indexOf(sep);
+                if (idx <= 0) {
+                    continue;
+                }
+
+                if (bestIndex === -1 || idx < bestIndex || (idx === bestIndex && sep.length > bestSeparator.length)) {
+                    bestIndex = idx;
+                    bestSeparator = sep;
+                }
+            }
+
+            if (bestIndex === -1) {
+                return null;
+            }
+
+            const rawKey = line.slice(0, bestIndex).trim();
+            const rawValue = line.slice(bestIndex + bestSeparator.length).trim();
+
+            const key = normalizeKey(rawKey);
+            if (!key) {
+                return null;
+            }
+
+            return { key, value: rawValue };
+        }
+
+        function normalizeKey(key) {
+            if (!key || typeof key !== 'string') {
+                return null;
+            }
+
+            let cleaned = key.toLowerCase().trim();
+            cleaned = cleaned.replace(/^[\-\*\u2022]+\s*/, '');
+            cleaned = cleaned.replace(/^\d+[\)\.\-]\s*/, '');
+            cleaned = cleaned.replace(/^['"`]+|['"`]+$/g, '');
+            cleaned = cleaned.replace(/\s+/g, ' ');
+
+            if (!cleaned || !/^[a-z0-9 _-]+$/.test(cleaned)) {
+                return null;
+            }
+
+            const keyMap = {
+                'username': 'username',
+                'login': 'username',
+                'handle': 'username',
+                'user': 'username',
+                'password': 'password',
+                'passkey': 'password',
+                'pass': 'password',
+                'pwd': 'password',
+                'login_pass': 'password',
+                'email': 'email',
+                'e-mail': 'email',
+                'primary email': 'email',
+                'backup_email': 'email',
+                'email-password': 'email_password',
+                'email_password': 'email_password',
+                'email_pass': 'email_password',
+                'email pass': 'email_password',
+                'password_email': 'email_password',
+                'email-pass': 'email_password',
+                'secondary email': 'secondary_email',
+                'secondary_email': 'secondary_email',
+                '2fa': '2fa_link',
+                '2fa_link': '2fa_link',
+                '2fa link': '2fa_link',
+                '2fa_recovery': '2fa_link',
+                'backup': '2fa_link',
+                'two factor': '2fa_link',
+                'profile': 'profile_link',
+                'profile_link': 'profile_link',
+                'profile_url': 'profile_link',
+                'profile url': 'profile_link',
+                'profile link': 'profile_link',
+                'url': 'profile_link',
+                'link': 'profile_link',
+                'phone': 'phone',
+                'recovery phone': 'phone',
+                'security_q': 'security_question',
+                'security question': 'security_question',
+                'security_a': 'security_answer',
+                'security answer': 'security_answer',
+                'platform': 'platform',
+                'status': 'status',
+                'creation_date': 'creation_date',
+                'date': 'creation_date'
+            };
+
+            if (keyMap[cleaned]) {
+                return keyMap[cleaned];
+            }
+
+            const normalized = cleaned
+                .replace(/[^a-z0-9]+/g, '_')
+                .replace(/^_+|_+$/g, '');
+
+            return normalized || null;
+        }
+
+        function displayPreview() {
+            const table = document.getElementById('previewTable');
+            const emptyState = document.getElementById('emptyState');
+            const stats = document.getElementById('stats');
+            const statsText = document.getElementById('statsText');
+
+            table.querySelector('thead').innerHTML = '';
+            table.querySelector('tbody').innerHTML = '';
+
+            if (parsedData.length === 0 || csvHeaders.length === 0) {
+                emptyState.textContent = '$ no parsed rows to preview. check warnings.';
+                emptyState.style.display = 'flex';
+                stats.style.display = 'block';
+                statsText.textContent = `$ ${parsedData.length} account(s) | ${csvHeaders.length} field(s) | CHECK WARNINGS`;
+                return;
+            }
+
+            // Create header row
+            const headerRow = document.createElement('tr');
+            csvHeaders.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = formatHeaderName(header);
+                headerRow.appendChild(th);
+            });
+            table.querySelector('thead').appendChild(headerRow);
+
+            // Create data rows
+            parsedData.forEach(account => {
+                const row = document.createElement('tr');
+                csvHeaders.forEach(header => {
+                    const td = document.createElement('td');
+                    td.textContent = account[header] || '';
+                    row.appendChild(td);
+                });
+                table.querySelector('tbody').appendChild(row);
+            });
+
+            emptyState.style.display = 'none';
+            stats.style.display = 'block';
+            statsText.textContent = `$ ${parsedData.length} account(s) | ${csvHeaders.length} field(s) | READY`;
+        }
+
+        function renderWarnings(warnings) {
+            const warningMsg = document.getElementById('warningMessage');
+            warningMsg.classList.remove('show');
+
+            if (!warnings || warnings.length === 0) {
+                return;
+            }
+
+            let text = `⚠️ [WARNINGS] ${warnings.length} issue(s) detected:\n`;
+            text += warnings.map(w => `- ${w}`).join('\n');
+
+            warningMsg.textContent = text;
+            warningMsg.classList.add('show');
+        }
+
+        function formatHeaderName(header) {
+            return header
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ')
+                .replace(/2fa/gi, '2FA');
+        }
+
+        function downloadCSV() {
+            if (parsedData.length === 0) return;
+
+            let csv = csvHeaders.join(',') + '\n';
+
+            parsedData.forEach(account => {
+                const row = csvHeaders.map(header => {
+                    let value = account[header] || '';
+                    // Escape quotes and wrap in quotes if contains comma
+                    if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+                        value = '"' + value.replace(/"/g, '""') + '"';
+                    }
+                    return value;
+                });
+                csv += row.join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+
+            // Generate filename with platform, datetime, and total count
+            const filename = generateFilename();
+
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function generateFilename() {
+            const platform = inferPlatformFromDataset();
+
+            // Get current date and time
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            const dateStr = `${year}-${month}-${day}`;
+            const timeStr = `${hours}${minutes}${seconds}`;
+            const total = parsedData.length;
+
+            return `${platform}_${dateStr}_${timeStr}_t${total}.csv`;
+        }
+
+        function inferPlatformFromDataset() {
+            const counts = {};
+
+            parsedData.forEach(account => {
+                const platform = detectPlatform(account.profile_link || '');
+                if (platform) {
+                    counts[platform] = (counts[platform] || 0) + 1;
+                }
+            });
+
+            const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+            if (entries.length === 0) {
+                return 'accounts';
+            }
+
+            if (entries.length > 1 && entries[0][1] === entries[1][1]) {
+                return 'mixed';
+            }
+
+            if (entries.length > 1) {
+                return `${entries[0][0]}_mixed`;
+            }
+
+            return entries[0][0];
+        }
+
+        function detectPlatform(link) {
+            const url = String(link).toLowerCase();
+            if (!url) return null;
+            if (url.includes('x.com') || url.includes('twitter.com')) return 'twitter';
+            if (url.includes('tiktok.com')) return 'tiktok';
+            if (url.includes('facebook.com')) return 'facebook';
+            if (url.includes('instagram.com')) return 'instagram';
+            if (url.includes('linkedin.com')) return 'linkedin';
+            if (url.includes('reddit.com')) return 'reddit';
+            if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
+            return null;
+        }
+
+        function clearAll() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('previewTable').querySelector('thead').innerHTML = '';
+            document.getElementById('previewTable').querySelector('tbody').innerHTML = '';
+            document.getElementById('emptyState').textContent = '$ awaiting parsed data...';
+            document.getElementById('emptyState').style.display = 'flex';
+            document.getElementById('stats').style.display = 'none';
+            document.getElementById('downloadBtn').disabled = true;
+            document.getElementById('errorMessage').classList.remove('show');
+            document.getElementById('successMessage').classList.remove('show');
+            document.getElementById('warningMessage').classList.remove('show');
+            parsedData = [];
+            csvHeaders = [];
+            parseWarnings = [];
+        }
+    </script>
+</body>
+</html>
