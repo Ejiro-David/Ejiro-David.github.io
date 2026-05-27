@@ -3,32 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FASTACCS</title>
-  <meta name="description" content="Social Media Market &amp; Global Gifting.">
+  <title>FastAccs | FA Technologies LTD</title>
+  <meta name="description" content="FastAccs is the FA Technologies LTD hub for focused digital commerce brands: FastAccs SMM and FA Logistics.">
   <meta name="theme-color" content="#07090C">
+  <link rel="canonical" href="https://fastaccs.com/">
 
-  <!-- Open Graph / WhatsApp Preview -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://fastaccs.com/">
-  <meta property="og:site_name" content="FASTACCS">
-  <meta property="og:title" content="FASTACCS">
-  <meta property="og:description" content="Social Media Market &amp; Global Gifting.">
+  <meta property="og:site_name" content="FastAccs">
+  <meta property="og:title" content="FastAccs | FA Technologies LTD">
+  <meta property="og:description" content="The parent hub for FastAccs SMM and FA Logistics.">
   <meta property="og:image" content="https://raw.githubusercontent.com/fa-technologies-LTD/fastaccs-web/master/assets/fa-logo-green-black-bg.png">
   <meta property="og:image:width" content="898">
   <meta property="og:image:height" content="898">
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="FASTACCS">
-  <meta name="twitter:description" content="Social Media Market &amp; Global Gifting.">
+  <meta name="twitter:title" content="FastAccs | FA Technologies LTD">
+  <meta name="twitter:description" content="The parent hub for FastAccs SMM and FA Logistics.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/fa-technologies-LTD/fastaccs-web/master/assets/fa-logo-green-black-bg.png">
 
   <link rel="icon" type="image/png" href="assets/fa-mark-white-transparent.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JKR6RPV56"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -38,385 +36,544 @@
   </script>
 
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #07090C;
-      --text: rgba(255,255,255,0.92);
-      --text-muted: rgba(255,255,255,0.68);
-      --text-dim: rgba(255,255,255,0.50);
-      --border: rgba(255,255,255,0.10);
-      --border-2: rgba(255,255,255,0.14);
-      --surface: rgba(255,255,255,0.04);
-      --green: #05D471;
-      --blue: #696DFA;
-      --blue-light: #AAADFF;
+      --bg: #06090b;
+      --panel: rgba(11, 17, 20, 0.82);
+      --panel-strong: rgba(16, 25, 29, 0.94);
+      --text: rgba(255, 255, 255, 0.94);
+      --muted: rgba(255, 255, 255, 0.68);
+      --dim: rgba(255, 255, 255, 0.48);
+      --border: rgba(255, 255, 255, 0.12);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      --green: #10d878;
+      --green-soft: rgba(16, 216, 120, 0.14);
+      --blue-soft: rgba(98, 109, 255, 0.18);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
     }
 
+    html { min-height: 100%; background: var(--bg); }
+
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: linear-gradient(180deg, #07090C 0%, #050607 100%);
-      color: var(--text);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(16, 216, 120, 0.16), transparent 30%),
+        radial-gradient(circle at 80% 5%, rgba(98, 109, 255, 0.13), transparent 34%),
+        linear-gradient(145deg, #050708 0%, #071011 48%, #020303 100%);
       -webkit-font-smoothing: antialiased;
     }
 
-    .page {
-      text-align: center;
-      padding: 48px 20px 32px;
-      max-width: 680px;
-      width: 100%;
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent 78%);
+    }
+
+    a { color: inherit; }
+
+    .shell {
       position: relative;
-      z-index: 1;
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 34px;
     }
 
-    /* Logo */
-    .logo {
-      width: 64px;
-      margin: 0 auto 24px;
-      opacity: 0;
-      animation: fadeIn 0.6s ease-out 0.1s forwards;
-    }
-    .logo img { width: 100%; height: auto; display: block; }
-
-    /* Heading */
-    .brand {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 44px;
-      font-weight: 800;
-      letter-spacing: 0.03em;
-      line-height: 1.1;
-      margin-bottom: 8px;
-      opacity: 0;
-      animation: fadeIn 0.6s ease-out 0.2s forwards;
-    }
-    .brand span {
-      background: linear-gradient(135deg, rgba(255,255,255,0.95) 30%, var(--green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .org-line {
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--text-dim);
-      margin-bottom: 32px;
-      opacity: 0;
-      animation: fadeIn 0.6s ease-out 0.3s forwards;
-    }
-
-    /* Product cards */
-    .products {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeUp 0.6s ease-out 0.4s forwards;
-    }
-
-    .product {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 28px 16px 24px;
-      text-decoration: none;
-      color: var(--text);
-      transition: border-color 0.2s ease, transform 0.2s ease;
+    .topbar {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 74px;
+    }
+
+    .brand-lockup {
+      display: inline-flex;
       align-items: center;
       gap: 12px;
-      position: relative;
-    }
-    .product:hover {
-      border-color: var(--border-2);
-      transform: translateY(-2px);
+      text-decoration: none;
     }
 
-    .product-icon {
-      width: 40px;
+    .brand-lockup img {
+      width: 38px;
       height: 40px;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
+      object-fit: contain;
+      filter: drop-shadow(0 0 18px rgba(16, 216, 120, 0.24));
     }
 
-    .product-name {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 17px;
+    .brand-lockup span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
       font-weight: 700;
-    }
-
-    .product-desc {
-      font-size: 13px;
-      line-height: 1.5;
-      color: var(--text-muted);
-    }
-
-    .badge-live {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 3px 8px;
-      border-radius: 6px;
-    }
-
-    .badge-live-white {
-      background: rgba(5,212,113,0.10);
-      border: 1px solid rgba(5,212,113,0.22);
+      letter-spacing: 0.03em;
       color: var(--green);
     }
 
-    .badge-soon {
-      background: rgba(251,146,60,0.10);
-      border: 1px solid rgba(251,146,60,0.30);
-      color: #FB923C;
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    /* Trust section */
-    .trusted-by-customers {
-      margin: 32px 0;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255,255,255,0.10);
-      opacity: 0;
-      animation: fadeUp 0.6s ease-out 0.5s forwards;
+    .nav a {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 10px 13px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
     }
-    .trusted-by-customers-text {
-      font-size: 14px;
-      font-weight: 600;
+
+    .nav a:hover,
+    .nav a:focus-visible {
       color: var(--text);
-      letter-spacing: 0.02em;
+      border-color: var(--border);
+      background: rgba(255,255,255,0.04);
+      outline: none;
     }
 
-    /* Community link */
-    .community {
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 34px;
+      align-items: stretch;
+      margin-bottom: 28px;
+    }
+
+    .hero-copy {
+      padding: 42px;
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-copy::after {
+      content: '';
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -90px;
+      top: -90px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(16, 216, 120, 0.22), transparent 64%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      background: var(--green-soft);
+      border: 1px solid rgba(16, 216, 120, 0.22);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 14px rgba(16, 216, 120, 0.8);
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(42px, 8vw, 86px);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      max-width: 680px;
+      margin-bottom: 22px;
+    }
+
+    h1 span {
+      background: linear-gradient(130deg, #ffffff 12%, #a9f8cb 55%, var(--green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lead {
+      max-width: 620px;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 19px);
+      line-height: 1.65;
+      margin-bottom: 30px;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 14px 32px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(5,212,113,0.08);
-      color: var(--text);
+      gap: 9px;
+      min-height: 46px;
+      padding: 13px 18px;
+      border-radius: 999px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 800;
       text-decoration: none;
+      border: 1px solid var(--border);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #15d478, #079653);
+      border-color: rgba(16, 216, 120, 0.42);
+      color: #031009;
+      box-shadow: 0 14px 34px rgba(16, 216, 120, 0.22);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: rgba(255,255,255,0.045);
+    }
+
+    .signal-panel {
+      display: grid;
+      gap: 14px;
+    }
+
+    .signal-card {
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .signal-card strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .signal-card p {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin: 28px 0;
+    }
+
+    .brand-card {
       position: relative;
       overflow: hidden;
-      transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-      opacity: 0;
-      animation: fadeUp 0.6s ease-out 0.55s forwards, btn-glow-pulse 3.5s ease-in-out 1.8s infinite;
+      display: flex;
+      flex-direction: column;
+      min-height: 330px;
+      padding: 28px;
+      border-radius: 30px;
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025));
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
     }
-    .community::after {
+
+    .brand-card:hover,
+    .brand-card:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(16, 216, 120, 0.34);
+      outline: none;
+    }
+
+    .brand-card::after {
       content: '';
       position: absolute;
-      top: 0; left: 0;
-      width: 35%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(5,212,113,0.13), transparent);
-      animation: shimmer-sweep 3.5s ease-in-out 1.8s infinite;
+      inset: auto -70px -120px auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(16, 216, 120, 0.17), transparent 65%);
+      pointer-events: none;
     }
-    .community:hover {
-      border-color: var(--green);
-      background: rgba(5,212,113,0.14);
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+
+    .mark {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(16, 216, 120, 0.24);
+      background: rgba(16, 216, 120, 0.1);
       color: var(--green);
     }
 
-    /* Footer */
-    .footer {
-      margin-top: 48px;
+    .status {
+      color: var(--green);
+      background: rgba(16, 216, 120, 0.1);
+      border: 1px solid rgba(16, 216, 120, 0.22);
+      border-radius: 999px;
+      padding: 7px 10px;
       font-size: 11px;
-      color: var(--text-dim);
-      opacity: 0;
-      animation: fadeIn 0.6s ease-out 0.6s forwards;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+    .brand-card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(26px, 4vw, 38px);
+      letter-spacing: -0.04em;
+      margin-bottom: 12px;
     }
 
-    /* ── Logo breathe (Option C) ── */
-    @keyframes logo-breathe {
-      0%, 100% { opacity: 0.72; }
-      50%       { opacity: 1; }
+    .brand-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 15px;
+      max-width: 520px;
     }
-    .logo img { animation: logo-breathe 3s ease-in-out 0.9s infinite; }
 
-    /* ── Live badge dot blink (Option C) ── */
-    @keyframes dot-blink {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.25; transform: scale(0.55); }
-    }
-    .badge-live-white {
-      display: inline-flex;
+    .card-footer {
+      margin-top: auto;
+      padding-top: 28px;
+      display: flex;
       align-items: center;
-      gap: 5px;
-    }
-    .badge-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--green);
-      flex-shrink: 0;
-      animation: dot-blink 1.5s ease-in-out infinite;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--text);
+      font-weight: 900;
     }
 
-    /* ── Shimmer C + glow on community button ── */
-    @keyframes shimmer-sweep {
-      0%   { transform: translateX(-100%) skewX(-15deg); opacity: 0; }
-      8%   { opacity: 1; }
-      92%  { opacity: 1; }
-      100% { transform: translateX(300%) skewX(-15deg); opacity: 0; }
-    }
-    @keyframes btn-glow-pulse {
-      0%, 100% { box-shadow: 0 0 0px 0 rgba(5,212,113,0); }
-      50%       { box-shadow: 0 0 22px 0px rgba(5,212,113,0.20); }
+    .arrow {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--green);
     }
 
-    /* ── Background electric lines ── */
-    @keyframes line-appear {
-      0%   { stroke-dashoffset: 800; opacity: 0; }
-      5%   { opacity: 0.15; }
-      50%  { stroke-dashoffset: 0; opacity: 0.15; }
-      90%  { opacity: 0; }
-      100% { stroke-dashoffset: -800; opacity: 0; }
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
     }
-    .bg-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .bg-lines .el {
-      stroke: var(--green);
-      stroke-width: 0.7;
-      fill: none;
-      stroke-dasharray: 800;
-      stroke-dashoffset: 800;
-      animation: line-appear 6s ease-in-out infinite;
-      opacity: 0;
-    }
-    .bg-lines .el:nth-child(1) { animation-delay: 0s; }
-    .bg-lines .el:nth-child(2) { animation-delay: 1.3s; }
-    .bg-lines .el:nth-child(3) { animation-delay: 2.4s; }
-    .bg-lines .el:nth-child(4) { animation-delay: 3.7s; }
-    .bg-lines .el:nth-child(5) { animation-delay: 0.7s; }
-    .bg-lines .el:nth-child(6) { animation-delay: 2s; }
-    .bg-lines .el:nth-child(7) { animation-delay: 4.5s; }
-    .bg-lines .el:nth-child(8) { animation-delay: 1.8s; }
 
-    @media (max-width: 480px) {
-      .brand { font-size: 34px; }
-      .products { grid-template-columns: 1fr; }
-      .product { padding: 24px 16px 20px; }
-      .logo { width: 52px; }
+    .principle {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.035);
+      padding: 18px;
+    }
+
+    .principle strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .principle span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      padding: 22px 0 8px;
+      color: var(--dim);
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer a:hover,
+    .footer a:focus-visible {
+      color: var(--text);
+      outline: none;
+    }
+
+    @media (max-width: 840px) {
+      .topbar { margin-bottom: 34px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-copy { padding: 28px; border-radius: 26px; }
+      .brand-grid { grid-template-columns: 1fr; }
+      .principles { grid-template-columns: 1fr; }
+      .signal-panel { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 24px, 1120px); padding-top: 18px; }
+      .topbar { align-items: flex-start; }
+      .nav { gap: 4px; }
+      .nav a { padding: 8px 9px; font-size: 12px; }
+      .brand-lockup img { width: 32px; height: 34px; }
+      .brand-lockup span { font-size: 15px; }
+      .hero-copy { padding: 22px; }
+      .lead { font-size: 15px; }
+      .btn { width: 100%; }
+      .brand-card { min-height: 290px; padding: 22px; border-radius: 24px; }
+      .card-footer { align-items: flex-end; }
+      .footer { display: block; line-height: 1.9; }
+      .footer-links { margin-top: 10px; }
     }
   </style>
 </head>
 <body>
-  <!-- Background electric lines -->
-  <div class="bg-canvas">
-    <svg class="bg-lines" width="100%" height="100%" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <line class="el" x1="-20" y1="160" x2="500" y2="240"/>
-      <line class="el" x1="420" y1="0" x2="20" y2="420"/>
-      <line class="el" x1="0" y1="500" x2="460" y2="340"/>
-      <line class="el" x1="220" y1="-10" x2="170" y2="810"/>
-      <line class="el" x1="-10" y1="320" x2="440" y2="560"/>
-      <line class="el" x1="60" y1="800" x2="400" y2="100"/>
-      <line class="el" x1="340" y1="-5" x2="90" y2="790"/>
-      <line class="el" x1="-20" y1="640" x2="450" y2="120"/>
-    </svg>
-  </div>
+  <main class="shell">
+    <header class="topbar" aria-label="FastAccs header">
+      <a class="brand-lockup" href="/" aria-label="FastAccs home">
+        <img src="assets/fa-mark-white-transparent.png" alt="" width="516" height="548">
+        <span>FAST ACCOUNTS</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="https://smm.fastaccs.com/">SMM</a>
+        <a href="/logistics/">Logistics</a>
+        <a href="/tools/">Tools</a>
+        <a href="https://wa.link/fast_accounts" target="_blank" rel="noopener noreferrer">Support</a>
+      </nav>
+    </header>
 
-  <div class="page">
-    <div class="logo">
-      <a href="/"><img src="assets/fa-mark-white-transparent.png" alt="FASTACCS" width="516" height="548"></a>
-    </div>
-
-    <h1 class="brand"><span>FASTACCS</span></h1>
-    <p class="org-line">by FA Technologies</p>
-
-    <div class="products">
-      <a href="/logistics/" class="product">
-        <div class="product-icon" style="background: rgba(5,212,113,0.10); border: 1px solid rgba(5,212,113,0.22);">
-          <svg width="20" height="20" fill="none" stroke="#05D471" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <div class="eyebrow">FA Technologies LTD</div>
+        <h1 id="page-title">One company. <span>Focused commerce brands.</span></h1>
+        <p class="lead">FastAccs is the parent hub for our active customer brands: a social media account marketplace and a curated logistics/gifting service. Each business now has its own focused destination, so marketing, SEO, and support stay cleaner.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://smm.fastaccs.com/">Visit FastAccs SMM</a>
+          <a class="btn btn-secondary" href="/logistics/">Visit FA Logistics</a>
         </div>
-        <div class="product-name">FA Logistics</div>
-        <div class="product-desc">Worldwide Gift Delivery. Send&nbsp;Love, Instantly, Anywhere.</div>
+      </div>
+
+      <aside class="signal-panel" aria-label="Business focus">
+        <div class="signal-card">
+          <strong>Separate lanes.</strong>
+          <p>SMM and Logistics are marketed as independent businesses, while FastAccs remains the trusted parent brand.</p>
+        </div>
+        <div class="signal-card">
+          <strong>Cleaner discovery.</strong>
+          <p>Visitors can quickly choose the exact service they need without landing on old coming-soon pages or mixed catalog noise.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="brand-grid" aria-label="FastAccs brands">
+      <a class="brand-card" href="https://smm.fastaccs.com/" aria-label="Open FastAccs SMM marketplace">
+        <div class="card-top">
+          <div class="mark" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="status">Active</span>
+        </div>
+        <h2>FastAccs SMM</h2>
+        <p>Secure marketplace for social media accounts and growth services, with checkout, delivery, guides, and support handled on the dedicated SMM site.</p>
+        <div class="card-footer">
+          <span>Open marketplace</span>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+        </div>
       </a>
 
-      <a href="/smm/" class="product">
-        <span class="badge-live badge-soon">Coming Soon</span>
-        <div class="product-icon" style="background: rgba(5,212,113,0.10); border: 1px solid rgba(5,212,113,0.22);">
-          <svg width="20" height="20" fill="none" stroke="#05D471" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      <a class="brand-card" href="/logistics/" aria-label="Open FA Logistics">
+        <div class="card-top">
+          <div class="mark" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <span class="status">Active</span>
         </div>
-        <div class="product-name" style="color: var(--text);">FastAccounts SMM</div>
-        <div class="product-desc">Your Trusted Marketplace for Social Media Accounts.</div>
+        <h2>FA Logistics</h2>
+        <p>Curated gifts, flowers, food, and special deliveries for customers who want simple ordering and careful fulfillment.</p>
+        <div class="card-footer">
+          <span>Open logistics</span>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+        </div>
       </a>
-    </div>
-    <div class="trusted-by-customers">
-      <p class="trusted-by-customers-text">Trusted by <span id="customerCount" style="color:var(--green);font-weight:700;display:inline-block;transition:font-size 0.3s cubic-bezier(0.34,1.56,0.64,1);">0</span> customers</p>
-    </div>
+    </section>
 
-    <a href="https://chat.whatsapp.com/L4pqTeTiKIF9AXcbpvMLCo" class="community" target="_blank" rel="noopener noreferrer" onclick="gtag('event', 'join_community', {'event_category': 'engagement', 'event_label': 'whatsapp_community'})">
-      Join our community&ensp;→
-    </a>
+    <section class="principles" aria-label="Operating principles">
+      <div class="principle">
+        <strong>Fast paths</strong>
+        <span>Each brand gets a clear destination, direct CTA, and less friction for paid traffic.</span>
+      </div>
+      <div class="principle">
+        <strong>Trusted support</strong>
+        <span>One WhatsApp support route keeps customer contact simple across FastAccs brands.</span>
+      </div>
+      <div class="principle">
+        <strong>SEO clarity</strong>
+        <span>Root is the company hub; product intent belongs on the dedicated business sites.</span>
+      </div>
+    </section>
 
-    <p class="footer">© 2026 FA Technologies LTD</p>
-  </div>
-  <script>
-    (function () {
-      function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-      var el = document.getElementById('customerCount');
-      var target = 5000;
-      var duration = 2600;
-      var baseSize = 14; // px — matches .trusted-by-customers-text font-size
-      var start = null;
-      function step(ts) {
-        if (!start) start = ts;
-        var elapsed = ts - start;
-        var progress = Math.min(elapsed / duration, 1);
-        var eased = easeOutCubic(progress);
-        var current = Math.round(target * eased);
-        if (progress < 1) {
-          // Font grows from baseSize up to baseSize*1.55 at peak, proportional to eased
-          var growPx = baseSize + (baseSize * 0.55 * eased);
-          el.style.fontSize = growPx.toFixed(1) + 'px';
-          el.style.lineHeight = '1';
-          el.textContent = current.toLocaleString();
-          requestAnimationFrame(step);
-        } else {
-          el.textContent = '5,000+';
-          // Pop: briefly overshoot then snap back via CSS transition
-          el.style.fontSize = (baseSize * 1.7) + 'px';
-          el.style.lineHeight = '1';
-          setTimeout(function () {
-            el.style.fontSize = '';
-            el.style.lineHeight = '';
-          }, 40);
-        }
-      }
-      // Start after page entrance animations settle
-      setTimeout(function () { requestAnimationFrame(step); }, 900);
-    })();
-  </script>
+    <footer class="footer">
+      <p>SSL Secured &middot; Support Team &middot; &copy; 2026 FA Technologies LTD. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="https://wa.link/fast_accounts" target="_blank" rel="noopener noreferrer">WhatsApp Support</a>
+        <a href="mailto:support@fastaccs.com">Support Email</a>
+        <a href="/tools/">Tools</a>
+      </div>
+    </footer>
+  </main>
 </body>
 </html>
