@@ -13,6 +13,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="CSV Lazer — FASTACCS Tools">
     <meta name="twitter:description" content="Agnostic credential parser to CSV. Handles varied field formats and custom headers directly in your browser.">
+    <meta name="robots" content="noindex, nofollow">
     <link rel="canonical" href="https://fastaccs.com/tools/csv-lazer/">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='22' font-family='monospace' font-weight='bold' fill='%2300ff66'>%3E_</text></svg>">
     <style>
@@ -530,7 +531,7 @@
                 });
 
                 // Define priority order
-                const priorityOrder = ['profile_link', 'username', 'password', 'email', 'email_password', 'secondary_email', 'phone', '2fa_link'];
+                const priorityOrder = ['profile_link', 'username', 'password', 'email', '2fa_link', 'mail_pass', 'email_password', 'backup_email', 'secondary_email', 'phone'];
                 csvHeaders = [];
 
                 // Add headers in priority order
@@ -568,16 +569,38 @@
             const lines = input.split('\n');
 
             let currentBlock = null;
+            let pendingField = null;
             let inCodeFence = false;
             const unrecognizedLines = [];
             const codeFenceLines = [];
             const delayedUrlLines = [];
 
             const closeCurrentBlock = () => {
+                if (pendingField) {
+                    warnings.push(`W105 line ${pendingField.lineNumber}: Empty value for key "${pendingField.key}" was ignored.`);
+                    pendingField = null;
+                }
+
                 if (currentBlock && Object.keys(currentBlock.fields).length > 0) {
                     credentialBlocks.push(currentBlock);
                 }
                 currentBlock = null;
+            };
+
+            const ensureCurrentBlock = (lineNumber) => {
+                if (!currentBlock) {
+                    currentBlock = { startLine: lineNumber, fields: {} };
+                }
+            };
+
+            const setCurrentField = (key, value, lineNumber) => {
+                ensureCurrentBlock(lineNumber);
+
+                if (Object.prototype.hasOwnProperty.call(currentBlock.fields, key)) {
+                    warnings.push(`W104 line ${lineNumber}: Duplicate key "${key}" in the same block; latest value kept.`);
+                }
+
+                currentBlock.fields[key] = value;
             };
 
             for (let i = 0; i < lines.length; i++) {
@@ -612,33 +635,46 @@
                     continue;
                 }
 
-                if (isUrl(line)) {
-                    if (currentBlock) {
-                        delayedUrlLines.push(lineNumber);
-                        closeCurrentBlock();
+                const parsed = parseCredentialLine(line);
+                const lineIsUrl = isUrl(line);
+
+                if (pendingField) {
+                    if (parsed && !lineIsUrl) {
+                        warnings.push(`W105 line ${pendingField.lineNumber}: Empty value for key "${pendingField.key}" was ignored.`);
+                        pendingField = null;
+                    } else {
+                        setCurrentField(pendingField.key, line, lineNumber);
+                        pendingField = null;
+                        continue;
                     }
-                    urls.push(line);
+                }
+
+                if (lineIsUrl) {
+                    if (currentBlock) {
+                        if (!currentBlock.fields['2fa_link'] && !isLikelyProfileUrl(line)) {
+                            setCurrentField('2fa_link', line, lineNumber);
+                            warnings.push(`W113 line ${lineNumber}: Unlabeled non-profile link was kept as "2fa_link".`);
+                            continue;
+                        } else {
+                            delayedUrlLines.push(lineNumber);
+                            closeCurrentBlock();
+                        }
+                    }
+                    urls.push({ value: line, lineNumber });
                     continue;
                 }
 
-                const parsed = parseCredentialLine(line);
                 if (parsed) {
                     const { key, value } = parsed;
 
+                    ensureCurrentBlock(lineNumber);
+
                     if (value === '') {
-                        warnings.push(`W105 line ${lineNumber}: Empty value for key "${key}" was ignored.`);
+                        pendingField = { key, lineNumber };
                         continue;
                     }
 
-                    if (!currentBlock) {
-                        currentBlock = { startLine: lineNumber, fields: {} };
-                    }
-
-                    if (Object.prototype.hasOwnProperty.call(currentBlock.fields, key)) {
-                        warnings.push(`W104 line ${lineNumber}: Duplicate key "${key}" in the same block; latest value kept.`);
-                    }
-
-                    currentBlock.fields[key] = value;
+                    setCurrentField(key, value, lineNumber);
                     continue;
                 }
 
@@ -659,14 +695,6 @@
                 warnings.push(`W107: Found ${delayedUrlLines.length} link line(s) after credential parsing started at line(s) ${formatLineList(delayedUrlLines)}.`);
             }
 
-            if (urls.length > credentialBlocks.length) {
-                const missing = urls.length - credentialBlocks.length;
-                warnings.push(`W101: ${urls.length} link(s) found vs ${credentialBlocks.length} credential block(s). Created ${missing} link-only row(s) for trailing unmatched link(s).`);
-            } else if (credentialBlocks.length > urls.length) {
-                const missing = credentialBlocks.length - urls.length;
-                warnings.push(`W102: ${credentialBlocks.length} credential block(s) found vs ${urls.length} link(s). Created ${missing} row(s) with empty "profile_link".`);
-            }
-
             if (urls.length === 0 && credentialBlocks.length > 0) {
                 warnings.push('W110: No standalone link lines detected; rows were generated from labeled credential blocks only.');
             }
@@ -675,31 +703,112 @@
                 warnings.push('W111: No labeled credential blocks detected; link-only rows were generated.');
             }
 
-            const rowCount = Math.max(urls.length, credentialBlocks.length);
-            for (let idx = 0; idx < rowCount; idx++) {
+            const unusedLinks = urls.map((link, index) => ({ ...link, index, used: false }));
+
+            for (let idx = 0; idx < credentialBlocks.length; idx++) {
                 const row = {};
                 const block = credentialBlocks[idx];
-                const blockFields = block ? block.fields : {};
-                const listLink = urls[idx] || '';
+                const blockFields = block.fields;
+                const matchedLink = blockFields.profile_link ? null : findBestProfileLink(blockFields, unusedLinks);
 
                 Object.assign(row, blockFields);
 
-                if (listLink && row.profile_link && row.profile_link !== listLink) {
-                    warnings.push(`W109 row ${idx + 1}: "profile_link" from credential field differed from link list; link list value was kept.`);
-                }
-
-                if (listLink) {
-                    row.profile_link = listLink;
+                if (matchedLink) {
+                    row.profile_link = matchedLink.value;
+                    matchedLink.used = true;
                 } else if (!row.profile_link) {
                     row.profile_link = '';
                 }
 
-                if (Object.keys(row).length > 0) {
-                    accounts.push(row);
+                accounts.push(row);
+            }
+
+            unusedLinks
+                .filter(link => !link.used)
+                .forEach(link => {
+                    if (isLikelyProfileUrl(link.value)) {
+                        accounts.push({ profile_link: link.value });
+                    } else {
+                        warnings.push(`W114 line ${link.lineNumber}: Standalone non-profile link was not used as a profile row.`);
+                    }
+                });
+
+            const usedLinkCount = unusedLinks.filter(link => link.used).length;
+            const linkOnlyCount = unusedLinks.filter(link => !link.used && isLikelyProfileUrl(link.value)).length;
+            const unusedNonProfileCount = unusedLinks.filter(link => !link.used && !isLikelyProfileUrl(link.value)).length;
+
+            if (linkOnlyCount > 0) {
+                warnings.push(`W101: Created ${linkOnlyCount} link-only row(s) for unmatched standalone profile link(s).`);
+            }
+
+            if (credentialBlocks.length > usedLinkCount) {
+                const missing = credentialBlocks.filter(block => !block.fields.profile_link).length - usedLinkCount;
+                if (missing > 0) {
+                    warnings.push(`W102: ${missing} credential block(s) had no matching standalone profile link; "profile_link" was left empty.`);
                 }
             }
 
+            if (unusedNonProfileCount > 0 && credentialBlocks.length === 0) {
+                warnings.push(`W115: Ignored ${unusedNonProfileCount} standalone non-profile link(s).`);
+            }
+
             return { accounts, warnings };
+        }
+
+        function findBestProfileLink(fields, links) {
+            const candidates = links.filter(link => !link.used && isLikelyProfileUrl(link.value));
+            if (candidates.length === 0) {
+                return null;
+            }
+
+            const identityValues = [
+                fields.username,
+                fields.email,
+                fields.secondary_email
+            ].filter(Boolean);
+
+            for (const candidate of candidates) {
+                const tokens = extractProfileTokens(candidate.value);
+                if (identityValues.some(value => tokens.has(normalizeMatchToken(value)))) {
+                    return candidate;
+                }
+            }
+
+            return candidates[0];
+        }
+
+        function extractProfileTokens(link) {
+            const tokens = new Set();
+
+            try {
+                const url = new URL(link);
+                const id = url.searchParams.get('id');
+                if (id) {
+                    tokens.add(normalizeMatchToken(id));
+                }
+
+                url.pathname
+                    .split('/')
+                    .map(part => part.trim())
+                    .filter(Boolean)
+                    .forEach(part => tokens.add(normalizeMatchToken(part)));
+            } catch {
+                String(link)
+                    .split(/[/?#&=]+/)
+                    .map(part => part.trim())
+                    .filter(Boolean)
+                    .forEach(part => tokens.add(normalizeMatchToken(part)));
+            }
+
+            return tokens;
+        }
+
+        function normalizeMatchToken(value) {
+            return String(value)
+                .toLowerCase()
+                .trim()
+                .replace(/^@+/, '')
+                .replace(/@.*$/, '');
         }
 
         function isUrl(str) {
@@ -709,6 +818,10 @@
             } catch {
                 return false;
             }
+        }
+
+        function isLikelyProfileUrl(str) {
+            return Boolean(detectPlatform(str));
         }
 
         function isDelimiter(str) {
@@ -790,20 +903,26 @@
                 'email': 'email',
                 'e-mail': 'email',
                 'primary email': 'email',
-                'backup_email': 'email',
                 'email-password': 'email_password',
                 'email_password': 'email_password',
                 'email_pass': 'email_password',
                 'email pass': 'email_password',
                 'password_email': 'email_password',
                 'email-pass': 'email_password',
+                'mail pass': 'mail_pass',
+                'mail_pass': 'mail_pass',
+                'mail password': 'mail_pass',
                 'secondary email': 'secondary_email',
                 'secondary_email': 'secondary_email',
                 '2fa': '2fa_link',
                 '2fa_link': '2fa_link',
                 '2fa link': '2fa_link',
                 '2fa_recovery': '2fa_link',
-                'backup': '2fa_link',
+                'backup': 'backup_email',
+                'backup email': 'backup_email',
+                'backup_email': 'backup_email',
+                'recovery email': 'backup_email',
+                'recovery_email': 'backup_email',
                 'two factor': '2fa_link',
                 'profile': 'profile_link',
                 'profile_link': 'profile_link',
