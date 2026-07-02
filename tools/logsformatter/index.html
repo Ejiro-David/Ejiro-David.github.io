@@ -15,6 +15,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Logs Formatter — FASTACCS Tools">
   <meta name="twitter:description" content="Browser-based credential log parser. 100% private — data never leaves your device.">
+  <meta name="robots" content="noindex, nofollow">
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='22' font-family='monospace' font-weight='bold' fill='%234A9B7F'>%3E_</text></svg>">
   <link rel="canonical" href="https://fastaccs.com/tools/logsformatter/">
@@ -29,7 +30,6 @@
     <header class="header">
       <div class="header-top">
         <h1>Logs Formatter</h1>
-        <button class="help-btn" onclick="document.getElementById('helpDialog').showModal()" aria-label="Help">?</button>
       </div>
       <p class="privacy-badge"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>100% browser-based · data never leaves your device</p>
     </header>
@@ -127,33 +127,6 @@
       built for FASTACCS Tools
     </footer>
   </div>
-
-  <dialog id="helpDialog">
-    <div class="dialog-content">
-      <div class="dialog-header">
-        <h2>How to Use</h2>
-        <button class="close-btn" onclick="document.getElementById('helpDialog').close()">✕</button>
-      </div>
-      <ol class="help-steps">
-        <li><strong>Paste</strong> or <strong>drag & drop</strong> a .txt file into the input box</li>
-        <li><strong>Auto-convert</strong> is on by default — output updates as you type</li>
-        <li>Toggle off auto-convert to use <strong>custom formats</strong> (rename fields, use 'omit' to skip)</li>
-        <li>Use <strong>social buttons</strong> to generate profile links from usernames</li>
-        <li><strong>Reverse mode</strong> converts formatted output back to raw format</li>
-      </ol>
-      <div class="help-features">
-        <h3>Keyboard Shortcuts</h3>
-        <p><kbd>Ctrl+Enter</kbd> Convert · <kbd>Ctrl+Shift+C</kbd> Copy output</p>
-      </div>
-      <div class="help-features">
-        <h3>Supported Formats</h3>
-        <p>user:pass:2FA · user|pass|2FA · user;pass;2FA · user,pass,2FA</p>
-        <h3>Smart Detection</h3>
-        <p>Automatically classifies usernames, passwords, emails, 2FA codes. Omits hashes and tokens.</p>
-      </div>
-      <p class="help-privacy">🛡️ Everything processes in your browser. No servers, no tracking, no data collection.</p>
-    </div>
-  </dialog>
 
   <div class="toast" id="notification"></div>
   <script src="app.js"></script>
